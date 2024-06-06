@@ -58,6 +58,7 @@ public class Config {
           .disableHtmlEscaping()
           .disableJdkUnsafe()
           .registerTypeAdapter(Password.class, new PasswordTypeAdapter())
+          .registerTypeAdapter(Role.class, new RoleTypeAdapter())
           .create();
       Config config = gson.fromJson(gson.toJson(data), Config.class);
       log.info("configuration '{}'", config);

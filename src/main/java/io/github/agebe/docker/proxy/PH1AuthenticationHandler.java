@@ -24,9 +24,9 @@ import io.github.agebe.rproxy.RequestStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class AuthenticationHandler extends AbstractHttpRequestHandler {
+public class PH1AuthenticationHandler extends AbstractHttpRequestHandler {
 
-  private static final Logger log = LoggerFactory.getLogger(AuthenticationHandler.class);
+  private static final Logger log = LoggerFactory.getLogger(PH1AuthenticationHandler.class);
 
   @Override
   public RequestStatus handle(HttpServletRequest request, HttpServletResponse response) {

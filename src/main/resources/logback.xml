@@ -10,8 +10,8 @@
     <appender-ref ref="STDOUT" />
   </root>
 
- <logger name="agebe.LogRequestFilter" level="trace"/>
- <logger name="io.github.agebe.rproxy.ReverseProxy" level="trace"/>
+ <logger name="agebe.LogRequestFilter" level="info"/>
+ <logger name="io.github.agebe.rproxy.ReverseProxy" level="info"/>
 
 </configuration>
 

@@ -15,13 +15,16 @@ package io.github.agebe.docker.proxy;
 
 import java.util.List;
 
+import com.hrakaroo.glob.GlobPattern;
+import com.hrakaroo.glob.MatchingEngine;
+
 public class User {
 
   private String name;
 
   private Password password;
 
-  private String role;
+  private Role role;
 
   private List<String> repos;
 
@@ -33,12 +36,26 @@ public class User {
     return password;
   }
 
-  public String getRole() {
+  public Role getRole() {
     return role;
   }
 
   public List<String> getRepos() {
     return repos;
+  }
+
+  public boolean canAccessRepo(String repo) {
+    if((repos == null) || repos.isEmpty()) {
+      return true;
+    } else {
+      for(String pattern : repos) {
+        MatchingEngine matcher = GlobPattern.compile(pattern);
+        if(matcher.matches(repo)) {
+          return true;
+        }
+      }
+      return false;
+    }
   }
 
   @Override
