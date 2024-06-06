@@ -32,4 +32,9 @@ public class PlainPassword implements Password {
     return StringUtils.equals(entered, password);
   }
 
+  @Override
+  public String toString() {
+    return "***";
+  }
+
 }

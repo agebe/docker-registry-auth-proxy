@@ -21,12 +21,13 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 import io.github.agebe.rproxy.AbstractHttpRequestHandler;
+import io.github.agebe.rproxy.MatchType;
 import io.github.agebe.rproxy.ProxyPath;
 import io.github.agebe.rproxy.RequestStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@ProxyPath("v2/_catalog")
+@ProxyPath(value = "v2/_catalog", type = MatchType.EQUALS)
 public class PH3CatalogHandler extends AbstractHttpRequestHandler {
 
   private static final Logger log = LoggerFactory.getLogger(PH3CatalogHandler.class);
