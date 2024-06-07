@@ -16,9 +16,9 @@ repositories {
 
 dependencies {
   implementation 'org.slf4j:slf4j-api:2.0.13'
-  implementation 'io.github.agebe:rproxy-core:0.1.0-SNAPSHOT'
-  implementation 'io.github.agebe:rproxy-filter-initializer:0.1.0-SNAPSHOT'
-  implementation 'io.github.agebe:rproxy-resource-initializer:0.1.0-SNAPSHOT'
+  implementation 'io.github.agebe:rproxy-core:0.2.0-SNAPSHOT'
+  implementation 'io.github.agebe:rproxy-filter-initializer:0.2.0-SNAPSHOT'
+  implementation 'io.github.agebe:rproxy-resource-initializer:0.2.0-SNAPSHOT'
   implementation 'org.apache.commons:commons-lang3:3.14.0'
   implementation 'com.google.code.gson:gson:2.11.0'
   implementation 'org.yaml:snakeyaml:2.2'
