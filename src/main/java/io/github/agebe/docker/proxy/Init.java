@@ -39,7 +39,6 @@ public class Init implements ServletContextListener {
         Config.setConfFile(f);
         Config config = Config.getConfiguration();
         log.info("configuration '{}'", config);
-        // TODO make sure user name is unique
       } else {
         log.warn("configuration file '{}' not found, using defaults", f.getAbsolutePath());
       }

@@ -19,16 +19,12 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class Config {
-
-  private static final Logger log = LoggerFactory.getLogger(Config.class);
 
   private static File confFile;
 
@@ -61,6 +57,14 @@ public class Config {
           .registerTypeAdapter(Role.class, new RoleTypeAdapter())
           .create();
       Config config = gson.fromJson(gson.toJson(data), Config.class);
+      for(User user : config.getUsers()) {
+        long count = config.getUsers().stream()
+            .filter(u -> u.getName().equals(user.getName()))
+            .count();
+        if(count > 1) {
+          throw new RuntimeException("check configuration, user '%s' duplicated".formatted(user.getName()));
+        }
+      }
       return config;
     } catch(Exception e) {
       throw new RuntimeException("failed to parse configuration", e);
