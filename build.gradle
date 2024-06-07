@@ -51,3 +51,10 @@ tasks.named("dependencyUpdates").configure {
     isNonStable(it.candidate.version)
   }
 }
+
+task docker(type: Copy, dependsOn: 'war') {
+  from 'docker'
+  from 'tomcat'
+  from tasks.war.outputs
+  into 'build/docker'
+}
