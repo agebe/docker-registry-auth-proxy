@@ -15,8 +15,6 @@ package io.github.agebe.docker.proxy;
 
 import java.lang.reflect.Type;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -28,11 +26,7 @@ public class PasswordTypeAdapter implements JsonDeserializer<Password> {
   public Password deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
     String s = json.getAsString();
-    if(StringUtils.startsWith(s, "plain:")) {
-      return new PlainPassword(StringUtils.removeStart(s, "plain:"));
-    } else {
-      throw new JsonParseException("unsupported password type");
-    }
+    return new Password(s);
   }
 
 }

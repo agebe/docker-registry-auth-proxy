@@ -15,8 +15,37 @@ package io.github.agebe.docker.proxy;
 
 import java.util.function.Predicate;
 
-@FunctionalInterface
-public interface Password extends Predicate<String> {
+import org.apache.commons.lang3.StringUtils;
+import org.mindrot.jbcrypt.BCrypt;
+
+public class Password implements Predicate<String> {
+
+  private String password;
+
+  public Password(String password) {
+    super();
+    if(StringUtils.isBlank(password)) {
+      throw new RuntimeException("blank password");
+    }
+    this.password = password;
+  }
+
   @Override
-  boolean test(String entered);
+  public boolean test(String entered) {
+    if(StringUtils.startsWithAny(password, "$2a$", "$2y$")) {
+      // BCrypt
+      // org.mindrot:jbcrypt:0.4 can't handle 2y, replace with 2a
+      // java.lang.IllegalArgumentException: Invalid salt revision
+      // create the password with e.g.: htpasswd -Bn user
+      return BCrypt.checkpw(entered, "$2a$" + StringUtils.substring(password, 4));
+    } else {
+      // plain
+      return StringUtils.equals(entered, password);
+    }
+  }
+
+  @Override
+  public String toString() {
+    return "***";
+  }
 }
