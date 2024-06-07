@@ -25,7 +25,7 @@ public class PH3BaseHandler extends AbstractHttpRequestHandler {
 
   @Override
   public RequestStatus handle(HttpServletRequest request, HttpServletResponse response) {
-    String url = Config.getInstance().getRegistry()+"/v2/";
+    String url = Config.getConfiguration().getRegistry()+"/v2/";
     return forwardStreamResult(url, request, response);
   }
 

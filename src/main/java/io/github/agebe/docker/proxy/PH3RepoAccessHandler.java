@@ -43,7 +43,7 @@ public class PH3RepoAccessHandler extends AbstractHttpRequestHandler {
       return deny(response);
     }
     if(user.canAccessRepo(repo)) {
-      String url = Config.getInstance().getRegistry() + request.getRequestURI();
+      String url = Config.getConfiguration().getRegistry() + request.getRequestURI();
       return forwardStreamResult(url, request, response);
     } else {
       return deny(response);

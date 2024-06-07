@@ -39,7 +39,7 @@ public class PH3CatalogHandler extends AbstractHttpRequestHandler {
       log.warn("user is null");
       return deny(response);
     }
-    String url = Config.getInstance().getRegistry()+"/v2/_catalog";
+    String url = Config.getConfiguration().getRegistry()+"/v2/_catalog";
     if((user.getRepos() == null) || user.getRepos().isEmpty()) {
       return forwardStreamResult(url, request, response);
     } else {

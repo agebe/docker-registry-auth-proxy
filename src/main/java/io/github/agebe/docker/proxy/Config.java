@@ -30,7 +30,7 @@ public class Config {
 
   private static final Logger log = LoggerFactory.getLogger(Config.class);
 
-  private static Config instance;
+  private static File confFile;
 
   private String registry;
 
@@ -61,19 +61,18 @@ public class Config {
           .registerTypeAdapter(Role.class, new RoleTypeAdapter())
           .create();
       Config config = gson.fromJson(gson.toJson(data), Config.class);
-      log.info("configuration '{}'", config);
       return config;
     } catch(Exception e) {
       throw new RuntimeException("failed to parse configuration", e);
     }
  }
 
-  public static Config getInstance() {
-    return instance;
+  public static Config getConfiguration() {
+    return Config.parse(confFile);
   }
 
-  public static void setInstance(Config config) {
-    instance = config;
+  public static void setConfFile(File file) {
+    confFile = file;
   }
 
 }

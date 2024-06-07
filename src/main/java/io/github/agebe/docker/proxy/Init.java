@@ -31,12 +31,14 @@ public class Init implements ServletContextListener {
   public void contextInitialized(ServletContextEvent sce) {
     String cfg = System.getenv().get("DOCKER_PROXY_CONFIG");
     if(cfg == null) {
-      log.info("DOCKER_PROXY_CONFIG environment variable not set, using default configuration");
+      log.warn("DOCKER_PROXY_CONFIG environment variable not set");
     } else {
       File f = new File(cfg);
       if(f.exists()) {
         log.info("using configuration from '{}'", f.getAbsolutePath());
-        Config.setInstance(Config.parse(f));
+        Config.setConfFile(f);
+        Config config = Config.getConfiguration();
+        log.info("configuration '{}'", config);
         // TODO make sure user name is unique
       } else {
         log.warn("configuration file '{}' not found, using defaults", f.getAbsolutePath());

@@ -43,7 +43,7 @@ public class PH1AuthenticationHandler extends AbstractHttpRequestHandler {
       String s = new String(Base64.getDecoder().decode(base64));
       String name = StringUtils.substringBefore(s, ":");
       String password = StringUtils.substringAfter(s, ":");
-      User user = Config.getInstance()
+      User user = Config.getConfiguration()
           .getUsers()
           .stream()
           .filter(u -> u.getName().equals(name))
