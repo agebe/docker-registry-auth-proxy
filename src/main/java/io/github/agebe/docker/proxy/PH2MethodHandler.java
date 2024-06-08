@@ -35,20 +35,20 @@ public class PH2MethodHandler extends AbstractHttpRequestHandler {
     }
     Role role = user.getRole();
     if(role == null) {
-      log.warn("role is null for user '{}', deny access", user.getName());
+      log.warn("deny request, role is null for user '{}'", user.getName());
       return deny(response);
     } else if(Role.READER.equals(role)) {
       String method = request.getMethod();
       if(StringUtils.equalsAnyIgnoreCase(method, "get", "head")) {
         return RequestStatus.CONTINUE;
       } else {
-        log.info("deny '{}' '{}', user '{}'", method, request.getRequestURI(), user.getName());
+        log.info("deny request '{}' '{}', user '{}'", method, request.getRequestURI(), user.getName());
         return deny(response);
       }
     } else if(Role.WRITER.equals(role)) {
       String method = request.getMethod();
       if(StringUtils.equalsIgnoreCase(method, "delete")) {
-        log.info("deny '{}' '{}', user '{}'", method, request.getRequestURI(), user.getName());
+        log.info("deny request '{}' '{}', user '{}'", method, request.getRequestURI(), user.getName());
         return deny(response);
       } else {
         return RequestStatus.CONTINUE; 
@@ -56,7 +56,7 @@ public class PH2MethodHandler extends AbstractHttpRequestHandler {
     } else if(Role.ADMIN.equals(role)) {
       return RequestStatus.CONTINUE;
     } else {
-      log.warn("unknown role '{}' for user '{}'", role, user.getName());
+      log.warn("deny request, unknown role '{}' for user '{}'", role, user.getName());
       return deny(response);
     }
   }

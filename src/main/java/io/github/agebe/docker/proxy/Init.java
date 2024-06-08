@@ -40,7 +40,7 @@ public class Init implements ServletContextListener {
         Config config = Config.getConfiguration();
         log.info("configuration '{}'", config);
       } else {
-        log.warn("configuration file '{}' not found, using defaults", f.getAbsolutePath());
+        log.warn("configuration file '{}' not found", f.getAbsolutePath());
       }
     }
   }

@@ -36,7 +36,7 @@ public class PH3CatalogHandler extends AbstractHttpRequestHandler {
   public RequestStatus handle(HttpServletRequest request, HttpServletResponse response) {
     User user = (User)request.getAttribute("user");
     if(user == null) {
-      log.warn("user is null");
+      log.warn("deny request, user is null");
       return deny(response);
     }
     String url = Config.getConfiguration().getRegistry()+"/v2/_catalog";

@@ -35,4 +35,3 @@ public class PH3BaseRedirectHandler extends AbstractHttpRequestHandler {
   }
 
 }
-

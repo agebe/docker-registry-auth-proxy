@@ -35,17 +35,19 @@ public class PH3RepoAccessHandler extends AbstractHttpRequestHandler {
     String repo = getRepoName(request.getRequestURI());
     log.debug("request '{}', repo '{}'", request.getRequestURI(), repo);
     if(StringUtils.isBlank(repo)) {
+      log.info("deny request, repository is blank, request uri '{}'", request.getRequestURI());
       return deny(response);
     }
     User user = (User)request.getAttribute("user");
     if(user == null) {
-      log.warn("user is null");
+      log.warn("deny request, user is null");
       return deny(response);
     }
     if(user.canAccessRepo(repo)) {
       String url = Config.getConfiguration().getRegistry() + request.getRequestURI();
       return forwardStreamResult(url, request, response);
     } else {
+      log.info("deny request, user '{}' has insufficient privilege to access repository '{}'", user.getName(), repo);
       return deny(response);
     }
   }
