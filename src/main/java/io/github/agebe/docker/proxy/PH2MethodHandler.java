@@ -29,12 +29,12 @@ public class PH2MethodHandler extends PHAbstractHandler {
   public RequestStatus handle(HttpServletRequest request, HttpServletResponse response) {
     User user = (User)request.getAttribute("user");
     if(user == null) {
-      log.warn("unauthorized request, user is null");
+      log.warn("unauthorized request '{}', user is null", request.getRequestURI());
       return unauthorized(response);
     }
     Role role = user.getRole();
     if(role == null) {
-      log.warn("deny request, role is null for user '{}'", user.getName());
+      log.warn("deny request '{}', role is null for user '{}'", request.getRequestURI(), user.getName());
       return denied(response);
     } else if(Role.READER.equals(role)) {
       String method = request.getMethod();
@@ -55,7 +55,7 @@ public class PH2MethodHandler extends PHAbstractHandler {
     } else if(Role.ADMIN.equals(role)) {
       return RequestStatus.CONTINUE;
     } else {
-      log.warn("deny request, unknown role '{}' for user '{}'", role, user.getName());
+      log.warn("deny request '{}', unknown role '{}' for user '{}'", request.getRequestURI(), role, user.getName());
       return denied(response);
     }
   }

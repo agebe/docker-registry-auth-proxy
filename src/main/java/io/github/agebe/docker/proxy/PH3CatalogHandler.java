@@ -35,7 +35,7 @@ public class PH3CatalogHandler extends PHAbstractHandler {
   public RequestStatus handle(HttpServletRequest request, HttpServletResponse response) {
     User user = (User)request.getAttribute("user");
     if(user == null) {
-      log.warn("unauthorized request, user is null");
+      log.warn("unauthorized request '{}', user is null", request.getRequestURI());
       return unauthorized(response);
     }
     String url = Config.getConfiguration().getRegistry()+"/v2/_catalog";

@@ -33,13 +33,14 @@ public class PH1AuthenticationHandler extends PHAbstractHandler {
       traceRequest(request);
       String auth = request.getHeader("authorization");
       if(StringUtils.isBlank(auth)) {
-        log.info("unauthorized request, no authorization header");
+        log.info("unauthorized request '{}', no authorization header", request.getRequestURI());
         return unauthorized(response);
       }
       String method = StringUtils.substringBefore(auth, " ");
       String base64 = StringUtils.substringAfter(auth, " ");
       if(!"basic".equalsIgnoreCase(method)) {
-        log.info("unauthorized request, only basic authorization method supported, method '{}'", method);
+        log.info("unauthorized request '{}', only basic authorization method supported, method '{}'",
+            request.getRequestURI(), method);
         return unauthorized(response);
       }
       String s = new String(Base64.getDecoder().decode(base64));
@@ -52,7 +53,7 @@ public class PH1AuthenticationHandler extends PHAbstractHandler {
           .findFirst()
           .orElse(null);
       if((user == null) || !(user.getPassword().test(password))) {
-        log.info("unauthorized request, unknown user or wrong password, user '{}'", name);
+        log.info("unauthorized request '{}', unknown user or wrong password, user '{}'", request.getRequestURI(), name);
         return unauthorized(response);
       } else {
         request.setAttribute("user", user);
