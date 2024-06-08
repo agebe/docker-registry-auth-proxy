@@ -10,4 +10,7 @@
     <appender-ref ref="STDOUT" />
   </root>
 
+ <logger name="io.github.agebe.rproxy.ReverseProxy" level="debug"/>
+
 </configuration>
+

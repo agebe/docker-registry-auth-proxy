@@ -52,7 +52,7 @@ public class PH1AuthenticationHandler extends PHAbstractHandler {
           .findFirst()
           .orElse(null);
       if((user == null) || !(user.getPassword().test(password))) {
-        log.info("unauthorized request, unknown user or wrong password, user '{}'", user);
+        log.info("unauthorized request, unknown user or wrong password, user '{}'", name);
         return unauthorized(response);
       } else {
         request.setAttribute("user", user);
