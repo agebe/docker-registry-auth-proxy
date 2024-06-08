@@ -15,11 +15,15 @@ package io.github.agebe.docker.proxy;
 
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import io.github.agebe.rproxy.AbstractHttpRequestHandler;
 import io.github.agebe.rproxy.RequestStatus;
@@ -30,6 +34,17 @@ public abstract class PHAbstractHandler extends AbstractHttpRequestHandler {
 
   private static final Logger log = LoggerFactory.getLogger(PHAbstractHandler.class);
 
+  public static record DockerRegistryError(String code, String message, String detail) {};
+  public static record DockerRegistryErrors(List<DockerRegistryError> errors) {};
+
+  private Gson gson() {
+    return new GsonBuilder()
+        .disableHtmlEscaping()
+        .disableJdkUnsafe()
+        .serializeNulls()
+        .create();
+  }
+
   protected RequestStatus unauthorized(HttpServletResponse response) {
     try {
       response.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -37,20 +52,22 @@ public abstract class PHAbstractHandler extends AbstractHttpRequestHandler {
       response.setHeader("WWW-Authenticate", "Basic realm=\"Registry Realm\"");
       response.setHeader("X-Content-Type-Options", "nosniff");
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      response.getWriter().println("{\"errors\":[{\"code\":\"UNAUTHORIZED\",\"message\":\"authentication required\",\"detail\":null}]}");
+      response.getWriter().println(gson().toJson(new DockerRegistryErrors(
+          List.of(new DockerRegistryError("UNAUTHORIZED", "authentication required", null)))));
       return RequestStatus.COMPLETED;
     } catch(Exception e) {
       throw new DockerProxyException("failed to send unauthorized", e);
     }
   }
 
-  protected RequestStatus denied(HttpServletResponse response) {
+  protected RequestStatus denied(HttpServletResponse response, String message) {
     try {
       response.setHeader("Content-Type", "application/json; charset=utf-8");
       response.setHeader("Docker-Distribution-Api-Version", "registry/2.0");
       response.setHeader("X-Content-Type-Options", "nosniff");
       response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-      response.getWriter().println("{\"errors\":[{\"code\":\"DENIED\",\"message\":\"denied\",\"detail\":null}]}");
+      response.getWriter().println(gson().toJson(new DockerRegistryErrors(
+          List.of(new DockerRegistryError("DENIED", message, null)))));
       return RequestStatus.COMPLETED;
     } catch(Exception e) {
       throw new DockerProxyException("failed to send denied", e);

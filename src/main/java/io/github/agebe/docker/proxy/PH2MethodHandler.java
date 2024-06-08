@@ -35,20 +35,20 @@ public class PH2MethodHandler extends PHAbstractHandler {
     Role role = user.getRole();
     if(role == null) {
       log.warn("deny request '{}', role is null for user '{}'", request.getRequestURI(), user.getName());
-      return denied(response);
+      return denied(response, "access denied");
     } else if(Role.READER.equals(role)) {
       String method = request.getMethod();
       if(StringUtils.equalsAnyIgnoreCase(method, "get", "head")) {
         return RequestStatus.CONTINUE;
       } else {
         log.info("deny request '{}' '{}', user '{}'", method, request.getRequestURI(), user.getName());
-        return denied(response);
+        return denied(response, "read-only access");
       }
     } else if(Role.WRITER.equals(role)) {
       String method = request.getMethod();
       if(StringUtils.equalsIgnoreCase(method, "delete")) {
         log.info("deny request '{}' '{}', user '{}'", method, request.getRequestURI(), user.getName());
-        return denied(response);
+        return denied(response, "delete access denied");
       } else {
         return RequestStatus.CONTINUE; 
       }
@@ -56,7 +56,7 @@ public class PH2MethodHandler extends PHAbstractHandler {
       return RequestStatus.CONTINUE;
     } else {
       log.warn("deny request '{}', unknown role '{}' for user '{}'", request.getRequestURI(), role, user.getName());
-      return denied(response);
+      return denied(response, "access denied");
     }
   }
 

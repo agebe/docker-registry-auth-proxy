@@ -40,14 +40,14 @@ public class PH3RepoAccessHandler extends PHAbstractHandler {
     log.debug("request '{}', repo '{}'", request.getRequestURI(), repo);
     if(StringUtils.isBlank(repo)) {
       log.info("deny request, repository is blank, request uri '{}'", request.getRequestURI());
-      return denied(response);
+      return denied(response, "access denied");
     }
     if(user.canAccessRepo(repo)) {
       String url = Config.getConfiguration().getRegistry() + request.getRequestURI();
       return forwardStreamResult(url, request, response);
     } else {
       log.info("deny request, user '{}' has insufficient privilege to access repository '{}'", user.getName(), repo);
-      return denied(response);
+      return denied(response, "access denied, repository '%s".formatted(repo));
     }
   }
 
