@@ -13,23 +13,28 @@
  */
 package io.github.agebe.docker.proxy;
 
-import io.github.agebe.rproxy.MatchType;
-import io.github.agebe.rproxy.ProxyPath;
-import io.github.agebe.rproxy.RequestStatus;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+public class DockerProxyException extends RuntimeException {
 
-@ProxyPath(value = "v2", type = MatchType.EQUALS)
-public class PH3BaseRedirectHandler extends PHAbstractHandler {
+  private static final long serialVersionUID = -2465192146631318449L;
 
-  @Override
-  public RequestStatus handle(HttpServletRequest request, HttpServletResponse response) {
-    try {
-      response.sendRedirect("/v2/");
-      return RequestStatus.COMPLETED;
-    } catch(Exception e) {
-      throw new DockerProxyException(e);
-    }
+  public DockerProxyException() {
+    super();
+  }
+
+  public DockerProxyException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
+  }
+
+  public DockerProxyException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public DockerProxyException(String message) {
+    super(message);
+  }
+
+  public DockerProxyException(Throwable cause) {
+    super(cause);
   }
 
 }

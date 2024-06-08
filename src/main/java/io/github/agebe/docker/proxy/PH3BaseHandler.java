@@ -13,7 +13,6 @@
  */
 package io.github.agebe.docker.proxy;
 
-import io.github.agebe.rproxy.AbstractHttpRequestHandler;
 import io.github.agebe.rproxy.MatchType;
 import io.github.agebe.rproxy.ProxyPath;
 import io.github.agebe.rproxy.RequestStatus;
@@ -21,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @ProxyPath(value = "v2/", type = MatchType.EQUALS)
-public class PH3BaseHandler extends AbstractHttpRequestHandler {
+public class PH3BaseHandler extends PHAbstractHandler {
 
   @Override
   public RequestStatus handle(HttpServletRequest request, HttpServletResponse response) {

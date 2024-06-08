@@ -25,7 +25,7 @@ public class Password implements Predicate<String> {
   public Password(String password) {
     super();
     if(StringUtils.isBlank(password)) {
-      throw new RuntimeException("blank password");
+      throw new DockerProxyException("blank password");
     }
     this.password = password;
   }

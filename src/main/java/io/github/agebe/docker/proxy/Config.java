@@ -62,12 +62,12 @@ public class Config {
             .filter(u -> u.getName().equals(user.getName()))
             .count();
         if(count > 1) {
-          throw new RuntimeException("check configuration, user '%s' duplicated".formatted(user.getName()));
+          throw new DockerProxyException("check configuration, user '%s' duplicated".formatted(user.getName()));
         }
       }
       return config;
     } catch(Exception e) {
-      throw new RuntimeException("failed to parse configuration", e);
+      throw new DockerProxyException("failed to parse configuration", e);
     }
  }
 

@@ -17,12 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.github.agebe.rproxy.AbstractHttpRequestHandler;
 import io.github.agebe.rproxy.RequestStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class PH2MethodHandler extends AbstractHttpRequestHandler {
+public class PH2MethodHandler extends PHAbstractHandler {
 
   private static final Logger log = LoggerFactory.getLogger(PH2MethodHandler.class);
 
@@ -30,26 +29,26 @@ public class PH2MethodHandler extends AbstractHttpRequestHandler {
   public RequestStatus handle(HttpServletRequest request, HttpServletResponse response) {
     User user = (User)request.getAttribute("user");
     if(user == null) {
-      log.warn("user is null");
-      return deny(response);
+      log.warn("unauthorized request, user is null");
+      return unauthorized(response);
     }
     Role role = user.getRole();
     if(role == null) {
       log.warn("deny request, role is null for user '{}'", user.getName());
-      return deny(response);
+      return denied(response);
     } else if(Role.READER.equals(role)) {
       String method = request.getMethod();
       if(StringUtils.equalsAnyIgnoreCase(method, "get", "head")) {
         return RequestStatus.CONTINUE;
       } else {
         log.info("deny request '{}' '{}', user '{}'", method, request.getRequestURI(), user.getName());
-        return deny(response);
+        return denied(response);
       }
     } else if(Role.WRITER.equals(role)) {
       String method = request.getMethod();
       if(StringUtils.equalsIgnoreCase(method, "delete")) {
         log.info("deny request '{}' '{}', user '{}'", method, request.getRequestURI(), user.getName());
-        return deny(response);
+        return denied(response);
       } else {
         return RequestStatus.CONTINUE; 
       }
@@ -57,7 +56,7 @@ public class PH2MethodHandler extends AbstractHttpRequestHandler {
       return RequestStatus.CONTINUE;
     } else {
       log.warn("deny request, unknown role '{}' for user '{}'", role, user.getName());
-      return deny(response);
+      return denied(response);
     }
   }
 
