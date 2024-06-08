@@ -47,7 +47,7 @@ public class PH3RepoAccessHandler extends PHAbstractHandler {
       return forwardStreamResult(url, request, response);
     } else {
       log.info("deny request, user '{}' has insufficient privilege to access repository '{}'", user.getName(), repo);
-      return denied(response, "access denied, repository '%s".formatted(repo));
+      return denied(response, "access denied, repository '%s'".formatted(repo));
     }
   }
 
