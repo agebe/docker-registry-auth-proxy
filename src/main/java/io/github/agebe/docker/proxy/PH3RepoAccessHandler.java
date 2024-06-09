@@ -44,52 +44,12 @@ public class PH3RepoAccessHandler extends PHAbstractHandler {
     }
     if(user.canAccessRepo(repo)) {
       String url = Config.getConfiguration().getRegistry() + request.getRequestURI();
-//      return forwardStreamResult(url, request, response, null, headers -> fixLocationHeader(request, headers));
       return forwardStreamResult(url, request, response);
     } else {
       log.info("deny request, user '{}' has insufficient privilege to access repository '{}'", user.getName(), repo);
       return denied(response, "access denied, repository '%s'".formatted(repo));
     }
   }
-
-//  private HttpHeaders fixLocationHeader(HttpServletRequest request, HttpHeaders headers) {
-//    return new HttpHeaders(
-//        headers.version(),
-//        headers.statusCode(),
-//        headers.status(),
-//        fixedHeaders(request, headers.headers()));
-//  }
-//
-//  private Map<String, List<String>> fixedHeaders(HttpServletRequest request, Map<String, List<String>> headers) {
-//    if(headers == null) {
-//      return null;
-//    }
-//    return headers.entrySet()
-//        .stream()
-//        .map(me -> {
-//          if(StringUtils.equalsIgnoreCase("location", me.getKey())) {
-//            return new AbstractMap.SimpleImmutableEntry<>(me.getKey(), fixLocation(request, me.getValue()));
-//          } else {
-//            return me;
-//          }
-//        })
-//        .collect(Collectors.toMap(me -> me.getKey(), me -> me.getValue()));
-//  }
-//
-//  private List<String> fixLocation(HttpServletRequest request, List<String> locations) {
-//    return locations.stream()
-//        .map(l -> fixLocation(request, l))
-//        .toList();
-//  }
-//
-//  private String fixLocation(HttpServletRequest request, String location) {
-//    if(StringUtils.contains(location, "/v2/")) {
-//      String path = StringUtils.substringAfter(location, "/v2/");
-//      return request.getScheme() + "://" + request.getHeader("host") + "/v2/" + path;
-//    } else {
-//      return location;
-//    }
-//  }
 
   private String getRepoName(String uri) {
     String[] split = StringUtils.split(uri, '/');
