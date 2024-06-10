@@ -14,10 +14,13 @@
 package io.github.agebe.docker.proxy;
 
 import java.io.File;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -29,19 +32,30 @@ public class Init implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent sce) {
-    String cfg = System.getenv().get("DOCKER_PROXY_CONFIG");
-    if(cfg == null) {
-      log.warn("DOCKER_PROXY_CONFIG environment variable not set");
-    } else {
-      File f = new File(cfg);
-      if(f.exists()) {
-        log.info("using configuration from '{}'", f.getAbsolutePath());
-        Config.setConfFile(f);
-        Config config = Config.getConfiguration();
-        log.info("configuration '{}'", config);
+    try {
+      ServletContext ctx = sce.getServletContext();
+      Manifest manifest = new Manifest(ctx.getResourceAsStream("/META-INF/MANIFEST.MF"));
+      Attributes attributes = manifest.getMainAttributes();
+      log.info("starting {}-{}, git version {}",
+          attributes.getValue("Implementation-Title"),
+          attributes.getValue("Implementation-Version"),
+          attributes.getValue("git-version"));
+      String cfg = System.getenv().get("DOCKER_PROXY_CONFIG");
+      if(cfg == null) {
+        log.warn("DOCKER_PROXY_CONFIG environment variable not set");
       } else {
-        log.warn("configuration file '{}' not found", f.getAbsolutePath());
+        File f = new File(cfg);
+        if(f.exists()) {
+          log.info("using configuration from '{}'", f.getAbsolutePath());
+          Config.setConfFile(f);
+          Config config = Config.getConfiguration();
+          log.info("configuration '{}'", config);
+        } else {
+          log.warn("configuration file '{}' not found", f.getAbsolutePath());
+        }
       }
+    } catch(Exception e) {
+      throw new DockerProxyException("failed to initialize", e);
     }
   }
 
