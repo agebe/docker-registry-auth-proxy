@@ -66,6 +66,7 @@ war {
     attributes(
       'Implementation-Version': archiveVersion,
       'Implementation-Title': project.name,
-      'git-version': gitVersion())
+      'git-version': gitVersion(),
+      'git-hash': versionDetails().gitHash)
   }
 }

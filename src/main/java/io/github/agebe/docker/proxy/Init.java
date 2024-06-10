@@ -36,10 +36,11 @@ public class Init implements ServletContextListener {
       ServletContext ctx = sce.getServletContext();
       Manifest manifest = new Manifest(ctx.getResourceAsStream("/META-INF/MANIFEST.MF"));
       Attributes attributes = manifest.getMainAttributes();
-      log.info("starting {}-{}, git version {}",
+      log.info("starting {}-{}, git version {}, git hash '{}'",
           attributes.getValue("Implementation-Title"),
           attributes.getValue("Implementation-Version"),
-          attributes.getValue("git-version"));
+          attributes.getValue("git-version"),
+          attributes.getValue("git-hash"));
       String cfg = System.getenv().get("DOCKER_PROXY_CONFIG");
       if(cfg == null) {
         log.warn("DOCKER_PROXY_CONFIG environment variable not set");
