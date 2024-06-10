@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-  def rproxyVersion = "0.2.0-SNAPSHOT"
+  def rproxyVersion = "0.2.0"
   implementation "io.github.agebe:rproxy-core:$rproxyVersion"
   implementation "io.github.agebe:rproxy-filter-initializer:$rproxyVersion"
   implementation "io.github.agebe:rproxy-resource-initializer:$rproxyVersion"
