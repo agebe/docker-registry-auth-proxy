@@ -32,6 +32,16 @@ public class Config {
 
   private List<User> users;
 
+  public Config() {
+    super();
+  }
+
+  public Config(String registry, List<User> users) {
+    super();
+    this.registry = registry;
+    this.users = users;
+  }
+
   public String getRegistry() {
     return registry;
   }
@@ -72,7 +82,11 @@ public class Config {
  }
 
   public static Config getConfiguration() {
-    return Config.parse(confFile);
+    if((confFile != null) && confFile.canRead()) {
+      return Config.parse(confFile);
+    } else {
+      return new Config(null, List.of());
+    }
   }
 
   public static void setConfFile(File file) {
