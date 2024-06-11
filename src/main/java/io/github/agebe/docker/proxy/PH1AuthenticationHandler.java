@@ -56,6 +56,7 @@ public class PH1AuthenticationHandler extends PHAbstractHandler {
         log.info("unauthorized request '{}', unknown user or wrong password, user '{}'", request.getRequestURI(), name);
         return unauthorized(response);
       } else {
+        log.info("user '{}' authenticated", user.getName());
         request.setAttribute("user", user);
         return RequestStatus.CONTINUE;
       }
